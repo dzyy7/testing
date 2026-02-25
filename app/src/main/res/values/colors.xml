@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="mainPurple">#7B1FA2</color>
+    <color name="textDark">#333333</color>
+    <color name="secondaryPurple">#EAADFF</color>
+    <color name="textGray">#888888</color>
+    <color name="input_stroke">#E0E0E0</color>
+</resources>

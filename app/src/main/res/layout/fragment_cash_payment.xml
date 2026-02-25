@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="24dp">
+
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_white_rounded_stroke"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_back"
+        app:tint="#000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="Pembayaran Tunai"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnBack"
+        app:layout_constraintTop_toTopOf="@+id/btnBack" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@+id/layoutBottomInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/displayAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="300.000"
+                android:textColor="@color/mainPurple"
+                android:textSize="40sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/dividerInput"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="#E0E0E0"
+                app:layout_constraintTop_toBottomOf="@+id/displayAmount" />
+
+            <TextView
+                android:id="@+id/textHintNominal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Silahkan Masukan Nominal"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dividerInput" />
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flowChips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:constraint_referenced_ids="btn100,btn200,btn500,btn1000,btn2000,btn5000,btn10000,btn20000,btn50000,btn100000"
+                app:flow_horizontalGap="8dp"
+                app:flow_verticalGap="8dp"
+                app:flow_wrapMode="chain"
+                app:flow_horizontalStyle="packed"
+                app:flow_horizontalBias="0"
+                app:layout_constraintTop_toBottomOf="@+id/textHintNominal" />
+
+            <Button android:id="@+id/btn100" style="@style/ChipButtonStyle" android:text="Rp. 100" />
+            <Button android:id="@+id/btn200" style="@style/ChipButtonStyle" android:text="Rp. 200" />
+            <Button android:id="@+id/btn500" style="@style/ChipButtonStyle" android:text="Rp. 500" />
+            <Button android:id="@+id/btn1000" style="@style/ChipButtonStyle" android:text="Rp. 1.000" />
+            <Button android:id="@+id/btn2000" style="@style/ChipButtonStyle" android:text="Rp. 2.000" />
+            <Button android:id="@+id/btn5000" style="@style/ChipButtonStyle" android:text="Rp. 5.000" />
+            <Button android:id="@+id/btn10000" style="@style/ChipButtonStyle" android:text="Rp. 10.000" />
+            <Button android:id="@+id/btn20000" style="@style/ChipButtonStyle" android:text="Rp. 20.000" />
+            <Button android:id="@+id/btn50000" style="@style/ChipButtonStyle" android:text="Rp. 50.000" />
+            <Button android:id="@+id/btn100000" style="@style/ChipButtonStyle" android:text="Rp. 100.000" />
+
+            <TextView
+                android:id="@+id/textInputManual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Input Manual Pembayaran"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/flowChips" />
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:constraint_referenced_ids="key7,key8,key9,key4,key5,key6,key1,key2,key3,key0,keyDot,keyClear"
+                app:flow_maxElementsWrap="3"
+                app:flow_wrapMode="aligned"
+                app:flow_horizontalGap="16dp"
+                app:flow_verticalGap="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/textInputManual"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <Button android:id="@+id/key7" style="@style/KeypadMobileStyle" android:text="7" />
+            <Button android:id="@+id/key8" style="@style/KeypadMobileStyle" android:text="8" />
+            <Button android:id="@+id/key9" style="@style/KeypadMobileStyle" android:text="9" />
+            <Button android:id="@+id/key4" style="@style/KeypadMobileStyle" android:text="4" />
+            <Button android:id="@+id/key5" style="@style/KeypadMobileStyle" android:text="5" />
+            <Button android:id="@+id/key6" style="@style/KeypadMobileStyle" android:text="6" />
+            <Button android:id="@+id/key1" style="@style/KeypadMobileStyle" android:text="1" />
+            <Button android:id="@+id/key2" style="@style/KeypadMobileStyle" android:text="2" />
+            <Button android:id="@+id/key3" style="@style/KeypadMobileStyle" android:text="3" />
+            <Button android:id="@+id/key0" style="@style/KeypadMobileStyle" android:text="0" />
+            <Button android:id="@+id/keyDot" style="@style/KeypadMobileStyle" android:text="." />
+            <Button android:id="@+id/keyClear" style="@style/KeypadMobileStyle" android:text="C"
+                android:backgroundTint="#FF4444"
+                android:textColor="@android:color/white"
+                app:strokeColor="#FF4444"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutBottomInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/labelTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/valTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp300.000"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/mainPurple"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/labelKembalian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Kembalian"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelTotal" />
+
+        <TextView
+            android:id="@+id/valKembalian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="#FF8800"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/valTotal" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/black"
+            android:text="Lanjutkan"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/montserrat_bold"
+            app:cornerRadius="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/valKembalian" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

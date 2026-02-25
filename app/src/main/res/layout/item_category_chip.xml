@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.Chip
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.MaterialComponents.Chip.Entry"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/textCategory"
+
+    android:layout_marginEnd="8dp"
+
+    app:chipMinHeight="40dp"
+    app:chipCornerRadius="20dp"
+
+    android:text="Category"
+    android:textAlignment="center"
+    android:ellipsize="end"
+
+    app:chipIconVisible="false"
+    app:checkedIconVisible="false"
+    app:closeIconVisible="false" />
