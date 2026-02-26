@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import id.co.psplauncher.data.network.RemoteDataSource
 import id.co.psplauncher.data.network.auth.AuthApi
 import id.co.psplauncher.data.network.balance.BalanceApi
+import id.co.psplauncher.data.network.cart.ShoppingCartApi
 import id.co.psplauncher.data.network.chip.ChipApi
 import id.co.psplauncher.data.network.dashboard.DashboardApi
 import javax.inject.Singleton
@@ -30,7 +31,7 @@ object AppModule {
         return remoteDataSource.buildApi(ChipApi::class.java)
     }
 
-@Provides
+    @Provides
     fun provideDashboardApi(
         remoteDataSource: RemoteDataSource
     ): DashboardApi {
@@ -43,5 +44,8 @@ object AppModule {
     ): BalanceApi {
         return remoteDataSource.buildApi(BalanceApi::class.java)
     }
-
+    @Provides
+    fun provideShoppingCartApi(remoteDataSource: RemoteDataSource): ShoppingCartApi {
+        return remoteDataSource.buildApi(ShoppingCartApi::class.java)
+    }
 }

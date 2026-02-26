@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -57,9 +56,20 @@
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
-            <include layout="@layout/item_cart_payment_method" />
-            <include layout="@layout/item_cart_payment_method" />
-            <include layout="@layout/item_cart_payment_method" />
+            <!-- RecyclerView menggantikan 3x include hardcoded -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCartItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Loading indicator -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -81,9 +91,10 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tvTotalAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rp.300.000"
+                    android:text="Rp.0"
                     android:textColor="@color/mainPurple"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -111,6 +122,7 @@
                 android:weightSum="2">
 
                 <LinearLayout
+                    android:id="@+id/btnCash"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="8dp"
@@ -120,21 +132,22 @@
                     android:paddingHorizontal="12dp">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_cash"
-                        app:tint="#FFF"/>
+                        android:padding="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_violet_circle"
+                        android:src="@drawable/ic_cash" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Tunai"
-                        android:textColor="#FFFFFF"
-                        android:textStyle="bold" />
+                        android:textColor="#FFFFFF" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btnTransfer"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
@@ -169,6 +182,7 @@
                 android:weightSum="2">
 
                 <LinearLayout
+                    android:id="@+id/btnCard"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="8dp"
@@ -194,6 +208,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btnEdc"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
@@ -226,6 +241,7 @@
                 android:paddingHorizontal="16dp">
 
                 <LinearLayout
+                    android:id="@+id/btnQris"
                     android:layout_width="160dp"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_white_rounded_stroke"
@@ -274,10 +290,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tvBottomTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="300.000"
+            android:text="0"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/lblTotalAmount"

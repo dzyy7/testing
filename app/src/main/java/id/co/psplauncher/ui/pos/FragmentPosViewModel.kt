@@ -26,7 +26,6 @@ import id.co.psplauncher.data.network.response.Product
 import id.co.psplauncher.databinding.FragmentPosBinding
 import id.co.psplauncher.ui.pos.adapter.BalanceAdapter
 import id.co.psplauncher.ui.pos.adapter.BalanceCard
-
 import id.co.psplauncher.ui.pos.adapter.BalanceType
 import id.co.psplauncher.ui.pos.adapter.CategoryAdapter
 import id.co.psplauncher.ui.pos.adapter.GridProductAdapter
@@ -44,7 +43,7 @@ class FragmentPosViewModel @Inject constructor(
     private val balanceRepository: BalanceRepository
 ) : ViewModel() {
 
-    // --- State Data ---
+    // State Data
     private val _categories = MutableLiveData<List<Content>>()
     val categories: LiveData<List<Content>> = _categories
 
@@ -55,19 +54,40 @@ class FragmentPosViewModel @Inject constructor(
 
     private val _balanceCards = MutableLiveData<List<BalanceCard>>()
 
-    // --- Grid / List toggle state ---
-    private val _isGridMode = MutableLiveData(true)   // default = Grid
+    // Grid / List toggle state
+    private val _isGridMode = MutableLiveData(true)
     val isGridMode: LiveData<Boolean> = _isGridMode
+
+    // Adapter references untuk refresh cart state
+    private var gridAdapter: GridProductAdapter? = null
+    private var listAdapter: ListProductAdapter? = null
 
     // --- Filter state ---
     private var currentCategoryId: String? = null
     private var currentSearchQuery: String = ""
+    private var currentSortType: SortType = SortType.DEFAULT
 
-    // --- Init ---
+    enum class SortType {
+        DEFAULT,
+        NAME_DESC,  // Z-A
+        PRICE_ASC,  // Harga terendah
+        PRICE_DESC  // Harga tertinggi
+    }
+
+    // Init
     init {
         fetchBalanceData()
         fetchCategories()
         fetchProducts()
+    }
+
+    // Dipanggil dari Fragment saat CartManager.cartItems flow emit
+    fun refreshAdapterCartState() {
+        if (_isGridMode.value == true) {
+            gridAdapter?.refreshCartBadges()
+        } else {
+            listAdapter?.refreshCartQtys()
+        }
     }
 
     private fun fetchBalanceData() = viewModelScope.launch {
@@ -128,7 +148,7 @@ class FragmentPosViewModel @Inject constructor(
         }
     }
 
-    // --- Filter & Search ---
+    // Filter & Search
 
     fun filterByCategory(categoryId: String) {
         currentCategoryId = categoryId
@@ -137,6 +157,11 @@ class FragmentPosViewModel @Inject constructor(
 
     fun searchProduct(query: String) {
         currentSearchQuery = query
+        applyFilterAndSearch()
+    }
+
+    fun sortBy(sortType: SortType) {
+        currentSortType = sortType
         applyFilterAndSearch()
     }
 
@@ -153,10 +178,17 @@ class FragmentPosViewModel @Inject constructor(
             }
         }
 
+        result = when (currentSortType) {
+            SortType.NAME_DESC  -> result.sortedByDescending { it.name.lowercase() }
+            SortType.PRICE_ASC  -> result.sortedBy { it.sellingPrice }
+            SortType.PRICE_DESC -> result.sortedByDescending { it.sellingPrice }
+            SortType.DEFAULT    -> result
+        }
+
         _displayedProducts.value = result
     }
 
-    // --- UI Setup – Balance ---
+    // UI Setup – Balance
 
     fun setupBalanceCarousel(lifecycleOwner: LifecycleOwner, context: Context, binding: FragmentPosBinding) {
         _balanceCards.observe(lifecycleOwner) { cards ->
@@ -166,7 +198,6 @@ class FragmentPosViewModel @Inject constructor(
             val itemCount = cards.size
             setupCustomIndicators(context, binding, itemCount)
 
-            // Dengarkan pergeseran halaman untuk memperbarui bentuk indikator
             binding.vpBalance.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
@@ -178,7 +209,6 @@ class FragmentPosViewModel @Inject constructor(
 
     private fun setupCustomIndicators(context: Context, binding: FragmentPosBinding, count: Int) {
         binding.indicatorContainer.removeAllViews()
-
         val marginPx = (4 * context.resources.displayMetrics.density).toInt()
 
         for (i in 0 until count) {
@@ -189,7 +219,6 @@ class FragmentPosViewModel @Inject constructor(
                 ).apply {
                     setMargins(marginPx, 0, marginPx, 0)
                 }
-                // Panggil R secara langsung
                 setImageResource(if (i == 0) R.drawable.indicator_active else R.drawable.indicator_inactive)
             }
             binding.indicatorContainer.addView(imageView)
@@ -207,7 +236,7 @@ class FragmentPosViewModel @Inject constructor(
         }
     }
 
-    // --- UI Setup – Category ---
+    // UI Setup – Category
     fun setupCategoryRecycler(lifecycleOwner: LifecycleOwner, context: Context, binding: FragmentPosBinding) {
         val categoryAdapter = CategoryAdapter(emptyList()) { category ->
             filterByCategory(category.id)
@@ -229,20 +258,21 @@ class FragmentPosViewModel @Inject constructor(
         }
     }
 
-    // UI Setup – Product RecyclerView (Grid / List swap)
+    // UI Setup – Product RecyclerView
     fun setupProductRecycler(
         lifecycleOwner: LifecycleOwner,
         context: Context,
         binding: FragmentPosBinding,
         onGridProductClick: (Product) -> Unit
     ) {
-        val gridAdapter = GridProductAdapter(
+        // Simpan reference ke property ViewModel agar bisa di-refresh dari luar
+        gridAdapter = GridProductAdapter(
             items = emptyList(),
             context = context,
             onProductClick = onGridProductClick
         )
 
-        val listAdapter = ListProductAdapter(
+        listAdapter = ListProductAdapter(
             items = emptyList(),
             context = context,
             onProductClick = { product ->
@@ -261,33 +291,32 @@ class FragmentPosViewModel @Inject constructor(
             if (isGrid) {
                 binding.recyclerViewListing.layoutManager = GridLayoutManager(context, 2)
                 binding.recyclerViewListing.adapter = gridAdapter
-                gridAdapter.updateData(_displayedProducts.value ?: emptyList())
+                gridAdapter?.updateData(_displayedProducts.value ?: emptyList())
             } else {
                 binding.recyclerViewListing.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 binding.recyclerViewListing.adapter = listAdapter
-                listAdapter.updateData(_displayedProducts.value ?: emptyList())
+                listAdapter?.updateData(_displayedProducts.value ?: emptyList())
             }
         }
 
         // Observe products → update active adapter
         _displayedProducts.observe(lifecycleOwner) { list ->
             if (_isGridMode.value == true) {
-                gridAdapter.updateData(list)
+                gridAdapter?.updateData(list)
             } else {
-                listAdapter.updateData(list)
+                listAdapter?.updateData(list)
             }
         }
     }
 
-    // UI Setup – Grid / List Toggle Buttons
+    // UI Setup – Grid / List Toggle
     fun setupViewToggle(lifecycleOwner: LifecycleOwner, context: Context, binding: FragmentPosBinding) {
         fun applyToggleVisual(isGrid: Boolean) {
             if (isGrid) {
                 binding.frameGridView.background =
                     context.getDrawable(id.co.psplauncher.R.drawable.bg_btn_toggle_selected)
                 binding.btnGridView.setColorFilter(0xFF7B00AB.toInt())
-
                 binding.frameListView.background =
                     context.getDrawable(id.co.psplauncher.R.drawable.bg_btn_toggle_default)
                 binding.btnListView.setColorFilter(0xFF9E9E9E.toInt())
@@ -295,7 +324,6 @@ class FragmentPosViewModel @Inject constructor(
                 binding.frameListView.background =
                     context.getDrawable(id.co.psplauncher.R.drawable.bg_btn_toggle_selected)
                 binding.btnListView.setColorFilter(0xFF7B00AB.toInt())
-
                 binding.frameGridView.background =
                     context.getDrawable(id.co.psplauncher.R.drawable.bg_btn_toggle_default)
                 binding.btnGridView.setColorFilter(0xFF9E9E9E.toInt())
@@ -306,13 +334,8 @@ class FragmentPosViewModel @Inject constructor(
             applyToggleVisual(isGrid)
         }
 
-        binding.frameGridView.setOnClickListener {
-            _isGridMode.value = true
-        }
-
-        binding.frameListView.setOnClickListener {
-            _isGridMode.value = false
-        }
+        binding.frameGridView.setOnClickListener { _isGridMode.value = true }
+        binding.frameListView.setOnClickListener { _isGridMode.value = false }
     }
 
     // UI Setup – Search

@@ -6,13 +6,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import id.co.psplauncher.R
 import id.co.psplauncher.Utils.formatCurrency
+import id.co.psplauncher.data.network.Resource
 import id.co.psplauncher.databinding.FragmentCartBinding
+import id.co.psplauncher.ui.payment.PaymentFragment
 
 @AndroidEntryPoint
 class FragmentCart : BottomSheetDialogFragment() {
@@ -30,6 +33,7 @@ class FragmentCart : BottomSheetDialogFragment() {
         _binding = FragmentCartBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         parentFragmentManager.setFragmentResult("dismiss_cart", Bundle())
@@ -65,11 +69,34 @@ class FragmentCart : BottomSheetDialogFragment() {
         viewModel.cartItems.observe(viewLifecycleOwner) { items ->
             cartAdapter.updateData(items)
             updateTotal()
+            binding.rvCartItems.visibility = if (items.isEmpty()) View.GONE else View.VISIBLE
+        }
 
-            if (items.isEmpty()) {
-                binding.rvCartItems.visibility = View.GONE
-            } else {
-                binding.rvCartItems.visibility = View.VISIBLE
+        viewModel.postCartResult.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    binding.btnPay.isEnabled = false
+                    binding.btnPay.alpha = 0.6f
+                }
+                is Resource.Success -> {
+                    binding.btnPay.isEnabled = true
+                    binding.btnPay.alpha = 1f
+                    val cartId = result.value
+                    dismiss()
+                    val bundle = Bundle().apply { putString("cartId", cartId) }
+                    val paymentFragment = PaymentFragment().apply { arguments = bundle }
+                    // Gunakan fragmentManager dari Activity agar bisa replace container utama
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, paymentFragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+                is Resource.Failure -> {
+                    binding.btnPay.isEnabled = true
+                    binding.btnPay.alpha = 1f
+                    Toast.makeText(requireContext(), "Gagal memproses pesanan, coba lagi", Toast.LENGTH_SHORT).show()
+                }
+                else -> Unit
             }
         }
     }
@@ -84,8 +111,8 @@ class FragmentCart : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        binding.btnPay.setOnClickListener {
-            // TODO: Navigate to payment
+        binding.layoutPayment.setOnClickListener {
+            viewModel.postShoppingCart()
         }
     }
 
@@ -93,5 +120,4 @@ class FragmentCart : BottomSheetDialogFragment() {
         super.onDestroyView()
         _binding = null
     }
-    
 }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 data class CartItem(
     val product: Product,
-    var quantity: Int
+    val quantity: Int   // <-- UBAH var → val, paksa immutable
 ) {
     val totalPrice: Double
         get() = product.sellingPrice * quantity
@@ -25,7 +25,8 @@ object CartManager {
             val existingItem = currentItems[existingIndex]
             val newQuantity = existingItem.quantity + quantity
             if (newQuantity <= product.stock) {
-                existingItem.quantity = newQuantity
+                // Buat object BARU — bukan mutasi langsung
+                currentItems[existingIndex] = existingItem.copy(quantity = newQuantity)
             }
         } else {
             val qtyToAdd = if (quantity > product.stock) product.stock else quantity
@@ -39,22 +40,21 @@ object CartManager {
 
     fun updateQuantity(productId: String, newQuantity: Int) {
         val currentItems = _cartItems.value.toMutableList()
-        val item = currentItems.find { it.product.id == productId }
+        val index = currentItems.indexOfFirst { it.product.id == productId }
 
-        if (item != null) {
+        if (index >= 0) {
             if (newQuantity <= 0) {
-                currentItems.remove(item)
-            } else if (newQuantity <= item.product.stock) {
-                item.quantity = newQuantity
+                currentItems.removeAt(index)
+            } else if (newQuantity <= currentItems[index].product.stock) {
+                // Buat object BARU dengan copy() — bukan mutasi var langsung
+                currentItems[index] = currentItems[index].copy(quantity = newQuantity)
             }
             _cartItems.value = currentItems
         }
     }
 
     fun removeFromCart(productId: String) {
-        val currentItems = _cartItems.value.toMutableList()
-        currentItems.removeAll { it.product.id == productId }
-        _cartItems.value = currentItems
+        _cartItems.value = _cartItems.value.filter { it.product.id != productId }
     }
 
     fun clearCart() {

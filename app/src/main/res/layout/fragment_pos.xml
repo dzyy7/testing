@@ -60,6 +60,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="#7E00AA" />
 
+            <ImageView
+                android:id="@+id/btnDraft"
+                android:layout_marginRight="4dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Notification"
+                android:src="@drawable/ic_draft"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnNotification"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#7E00AA" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

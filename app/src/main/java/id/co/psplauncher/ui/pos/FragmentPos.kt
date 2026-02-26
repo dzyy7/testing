@@ -12,6 +12,7 @@ import id.co.psplauncher.Utils.formatCurrency
 import id.co.psplauncher.data.local.CartManager
 import id.co.psplauncher.databinding.FragmentPosBinding
 import id.co.psplauncher.ui.fragments.fragment_cart.FragmentCart
+import id.co.psplauncher.ui.fragments.fragment_draft.FragmentDraft
 import id.co.psplauncher.ui.fragments.item_detail.FragmentItemDetail
 import id.co.psplauncher.ui.main.MainActivity
 import kotlinx.coroutines.launch
@@ -34,7 +35,6 @@ class FragmentPos : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupUI()
         setupClickListeners()
         observeCart()
@@ -59,6 +59,33 @@ class FragmentPos : Fragment() {
             showCart()
         }
 
+        // Tombol draft — sesuaikan id dengan yang ada di fragment_pos.xml
+        binding.btnDraft.setOnClickListener {
+            showDraft()
+        }
+
+        binding.btnSort.setOnClickListener { view ->
+            val popup = android.widget.PopupMenu(requireContext(), view)
+            popup.menu.apply {
+                add(0, 0, 0, "A-Z")
+                add(0, 2, 2, "Z-A")
+                add(0, 3, 3, "Harga Terendah")
+                add(0, 4, 4, "Harga Tertinggi")
+            }
+            popup.setOnMenuItemClickListener { item ->
+                val (sortType, label) = when (item.itemId) {
+                    2 -> FragmentPosViewModel.SortType.NAME_DESC to "Z-A"
+                    3 -> FragmentPosViewModel.SortType.PRICE_ASC to "Terendah"
+                    4 -> FragmentPosViewModel.SortType.PRICE_DESC to "Tertinggi"
+                    else -> FragmentPosViewModel.SortType.DEFAULT to "A-Z"
+                }
+                viewModel.sortBy(sortType)
+                binding.btnSort.text = label
+                true
+            }
+            popup.show()
+        }
+
         binding.btnNotification.setOnClickListener {
             // TODO: Handle notification click
         }
@@ -72,6 +99,8 @@ class FragmentPos : Fragment() {
 
                 binding.tvItemCount.text = "$itemCount Item Selected"
                 binding.tvTotalPrice.text = "Rp. ${formatCurrency(totalPrice)}"
+
+                viewModel.refreshAdapterCartState()
             }
         }
     }
@@ -96,6 +125,16 @@ class FragmentPos : Fragment() {
         }
     }
 
+    private fun showDraft() {
+        dimBackground(true)
+        val dialog = FragmentDraft()
+        dialog.show(childFragmentManager, "FragmentDraft")
+
+        childFragmentManager.setFragmentResultListener("dismiss_draft", viewLifecycleOwner) { _, _ ->
+            dimBackground(false)
+        }
+    }
+
     private fun dimBackground(dim: Boolean) {
         if (dim) {
             binding.dimOverlay.visibility = View.VISIBLE
@@ -108,11 +147,12 @@ class FragmentPos : Fragment() {
                 .alpha(0f)
                 .setDuration(200)
                 .withEndAction {
-                    binding.dimOverlay.visibility = View.GONE
+                    _binding?.dimOverlay?.visibility = View.GONE
                 }
                 .start()
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
