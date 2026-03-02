@@ -21,7 +21,6 @@ class FragmentCartViewModel @Inject constructor(
 
     val cartItems = CartManager.cartItems.asLiveData()
 
-    // Emit cartId saat POST sukses, emit null saat error
     private val _postCartResult = MutableLiveData<Resource<String>>()
     val postCartResult: LiveData<Resource<String>> = _postCartResult
 
@@ -60,8 +59,15 @@ class FragmentCartViewModel @Inject constructor(
 
         viewModelScope.launch {
             _postCartResult.value = Resource.Loading
-            val result = shoppingCartRepository.postShoppingCart(request)
+            val existingCartId = CartManager.currentCartId
+            val result = if (existingCartId != null) {
+                shoppingCartRepository.putShoppingCart(existingCartId, request)
+            } else {
+                shoppingCartRepository.postShoppingCart(request)
+            }
+
             if (result is Resource.Success) {
+                CartManager.setCurrentCartId(result.value.id)
                 _postCartResult.value = Resource.Success(result.value.id)
             } else {
                 _postCartResult.value = result as Resource.Failure

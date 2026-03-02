@@ -40,12 +40,10 @@ class CartAdapter(
         }
 
         fun refreshQuantity(item: CartItem) {
-            // Selalu ambil quantity terbaru dari CartManager — bukan dari item yang bisa stale
             val currentQty = CartManager.getItemQuantity(item.product.id)
             binding.tvQuantity.text = currentQty.toString()
 
             binding.btnPlus.setOnClickListener {
-                // Query fresh saat diklik — bukan nilai yang di-capture saat bind()
                 val freshQty = CartManager.getItemQuantity(item.product.id)
                 val newQty = freshQty + 1
                 if (newQty <= item.product.stock) {
@@ -78,7 +76,6 @@ class CartAdapter(
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int, payloads: List<Any>) {
         if (payloads.isNotEmpty() && payloads[0] == PAYLOAD_QUANTITY_CHANGED) {
-            // Partial update — hanya refresh qty & listener, tidak reload gambar/nama
             holder.refreshQuantity(items[position])
         } else {
             holder.bind(items[position])

@@ -76,7 +76,8 @@
                 android:layout_marginTop="24dp"
                 android:text="Silahkan Masukan Nominal"
                 android:textColor="#333333"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:fontFamily="@font/montserrat"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dividerInput" />
 
@@ -86,8 +87,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:constraint_referenced_ids="btn100,btn200,btn500,btn1000,btn2000,btn5000,btn10000,btn20000,btn50000,btn100000"
-                app:flow_horizontalGap="8dp"
-                app:flow_verticalGap="8dp"
+                app:flow_horizontalGap="6dp"
+                app:flow_verticalGap="4dp"
                 app:flow_wrapMode="chain"
                 app:flow_horizontalStyle="packed"
                 app:flow_horizontalBias="0"
@@ -108,22 +109,22 @@
                 android:id="@+id/textInputManual"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="20dp"
                 android:text="Input Manual Pembayaran"
                 android:textColor="#333333"
-                android:textSize="14sp"
+                android:textSize="20sp"
+                android:fontFamily="@font/montserrat"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flowChips" />
 
             <androidx.constraintlayout.helper.widget.Flow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 app:constraint_referenced_ids="key7,key8,key9,key4,key5,key6,key1,key2,key3,key0,keyDot,keyClear"
                 app:flow_maxElementsWrap="3"
                 app:flow_wrapMode="aligned"
-                app:flow_horizontalGap="16dp"
-                app:flow_verticalGap="16dp"
+                app:flow_horizontalGap="12dp"
                 app:layout_constraintTop_toBottomOf="@+id/textInputManual"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>

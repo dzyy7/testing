@@ -40,6 +40,12 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
             preferences[ROLE_TYPE] ?: ""
         }
 
+    // Tambah companyId
+    val companyId: Flow<String>
+        get() = appContext.dataStore.data.map { preferences ->
+            preferences[COMPANY_ID] ?: ""
+        }
+
     suspend fun saveAccessToken(accessToken: String) {
         appContext.dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN] = accessToken
@@ -64,35 +70,33 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
         }
     }
 
+    suspend fun saveCompanyId(companyId: String) {
+        appContext.dataStore.edit { preferences ->
+            preferences[COMPANY_ID] = companyId
+        }
+    }
+
     suspend fun clearToken() {
         appContext.dataStore.edit { preferences ->
             preferences.remove(ACCESS_TOKEN)
             preferences.remove(USER_NAME)
             preferences.remove(MERCHANT_NAME)
             preferences.remove(ROLE_TYPE)
+            preferences.remove(COMPANY_ID)
         }
     }
 
-    fun getAccessToken() = runBlocking(Dispatchers.IO) {
-        accessToken.first()
-    }
-
-    fun getUserName() = runBlocking(Dispatchers.IO) {
-        userName.first()
-    }
-
-    fun getMerchantName() = runBlocking(Dispatchers.IO) {
-        merchantName.first()
-    }
-
-    fun getRoleType() = runBlocking(Dispatchers.IO) {
-        roleType.first()
-    }
+    fun getAccessToken() = runBlocking(Dispatchers.IO) { accessToken.first() }
+    fun getUserName() = runBlocking(Dispatchers.IO) { userName.first() }
+    fun getMerchantName() = runBlocking(Dispatchers.IO) { merchantName.first() }
+    fun getRoleType() = runBlocking(Dispatchers.IO) { roleType.first() }
+    fun getCompanyId() = runBlocking(Dispatchers.IO) { companyId.first() }
 
     companion object {
         private val ACCESS_TOKEN = stringPreferencesKey("access_token")
         private val USER_NAME = stringPreferencesKey("user_name")
         private val MERCHANT_NAME = stringPreferencesKey("merchant_name")
         private val ROLE_TYPE = stringPreferencesKey("role_type")
+        private val COMPANY_ID = stringPreferencesKey("company_id")
     }
 }

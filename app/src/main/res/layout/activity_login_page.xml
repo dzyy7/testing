@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#D2A8E0">
@@ -17,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardLogin"
         android:layout_width="0dp"
@@ -31,8 +29,7 @@
         app:cardBackgroundColor="@android:color/white"
         app:shapeAppearanceOverlay="@style/LoginCardShape">
 
-
-    <ScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
@@ -46,15 +43,16 @@
                 android:paddingTop="32dp"
                 android:paddingBottom="24dp">
 
+                <!-- Username Label -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="Login"
+                    android:text="Username"
                     android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="normal" />
+                    android:textSize="16sp" />
 
+                <!-- Username Field -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputUsername"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -66,18 +64,20 @@
                     app:boxCornerRadiusTopStart="30dp"
                     app:boxStrokeColor="#E0E0E0"
                     app:boxStrokeWidth="1dp"
+                    app:errorEnabled="true"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Input..."
+                        android:hint="Masukkan username"
                         android:inputType="text"
                         android:padding="16dp"
                         android:textColorHint="#BDBDBD"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Password Label -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -87,6 +87,7 @@
                     android:textColor="#000000"
                     android:textSize="16sp" />
 
+                <!-- Password Field -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputPassword"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -99,12 +100,13 @@
                     app:boxStrokeColor="#E0E0E0"
                     app:boxStrokeWidth="1dp"
                     app:endIconMode="password_toggle"
+                    app:errorEnabled="true"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Input..."
+                        android:hint="Masukkan password"
                         android:inputType="textPassword"
                         android:padding="16dp"
                         android:textColorHint="#BDBDBD"
@@ -116,28 +118,42 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="12dp"
                     android:text="Lupa Password?"
                     android:textColor="#212121"
                     android:textSize="13sp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnLogin"
+                <!-- Login Button with ProgressBar -->
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_marginTop="32dp"
-                    android:backgroundTint="#7B00AB"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="Login"
-                    android:textAllCaps="false"
-                    android:textSize="16sp"
-                    android:textStyle="normal"
-                    app:cornerRadius="30dp"
-                    app:icon="@drawable/ic_login_arrow"
-                    app:iconGravity="textStart"
-                    app:iconPadding="12dp"
-                    app:iconSize="20dp" />
+                    android:layout_marginTop="32dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="#7B00AB"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="Login"
+                        android:textAllCaps="false"
+                        android:textSize="16sp"
+                        app:cornerRadius="30dp"
+                        app:icon="@drawable/ic_login_arrow"
+                        app:iconGravity="textStart"
+                        app:iconPadding="12dp"
+                        app:iconSize="20dp" />
+
+                    <!-- Loading indicator di tengah button -->
+                    <ProgressBar
+                        android:id="@+id/progressLogin"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="#FFFFFF"
+                        android:visibility="gone" />
+
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -163,7 +179,6 @@
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
-
 
                 <View
                     android:layout_width="match_parent"

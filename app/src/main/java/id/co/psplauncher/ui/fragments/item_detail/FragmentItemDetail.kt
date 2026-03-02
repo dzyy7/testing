@@ -53,7 +53,6 @@ class FragmentItemDetail : DialogFragment() {
         return binding.root
     }
 
-    // ✅ FIX: Set dialog width to MATCH_PARENT dengan margin horizontal
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {

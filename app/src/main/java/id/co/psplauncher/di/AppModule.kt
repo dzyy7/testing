@@ -10,6 +10,7 @@ import id.co.psplauncher.data.network.balance.BalanceApi
 import id.co.psplauncher.data.network.cart.ShoppingCartApi
 import id.co.psplauncher.data.network.chip.ChipApi
 import id.co.psplauncher.data.network.dashboard.DashboardApi
+import id.co.psplauncher.data.network.transaction.TransactionApi
 import javax.inject.Singleton
 
 @Module
@@ -18,34 +19,32 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAuthApi(
-        remoteDataSource: RemoteDataSource
-    ): AuthApi {
+    fun provideAuthApi(remoteDataSource: RemoteDataSource): AuthApi {
         return remoteDataSource.buildApi(AuthApi::class.java)
     }
 
     @Provides
-    fun provideChipApi(
-        remoteDataSource: RemoteDataSource
-    ): ChipApi {
+    fun provideChipApi(remoteDataSource: RemoteDataSource): ChipApi {
         return remoteDataSource.buildApi(ChipApi::class.java)
     }
 
     @Provides
-    fun provideDashboardApi(
-        remoteDataSource: RemoteDataSource
-    ): DashboardApi {
+    fun provideDashboardApi(remoteDataSource: RemoteDataSource): DashboardApi {
         return remoteDataSource.buildApi(DashboardApi::class.java)
     }
 
     @Provides
-    fun provideBalanceApi(
-        remoteDataSource: RemoteDataSource
-    ): BalanceApi {
+    fun provideBalanceApi(remoteDataSource: RemoteDataSource): BalanceApi {
         return remoteDataSource.buildApi(BalanceApi::class.java)
     }
+
     @Provides
     fun provideShoppingCartApi(remoteDataSource: RemoteDataSource): ShoppingCartApi {
         return remoteDataSource.buildApi(ShoppingCartApi::class.java)
+    }
+
+    @Provides
+    fun provideTransactionApi(remoteDataSource: RemoteDataSource): TransactionApi {
+        return remoteDataSource.buildApi(TransactionApi::class.java)
     }
 }

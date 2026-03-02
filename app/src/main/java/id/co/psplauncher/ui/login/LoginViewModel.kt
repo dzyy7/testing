@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import id.co.psplauncher.data.local.UserPreferences
 import id.co.psplauncher.data.network.Resource
 import id.co.psplauncher.data.network.auth.AuthRepository
+import id.co.psplauncher.data.network.response.AuthCheckResponse
 import id.co.psplauncher.data.network.response.LoginResponse
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -79,10 +80,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private suspend fun saveUserData(data: id.co.psplauncher.data.network.response.AuthCheckResponse) {
+    private suspend fun saveUserData(data: AuthCheckResponse) {
         userPreferences.saveUserName(data.name)
         userPreferences.saveMerchantName(data.merchantName)
         userPreferences.saveRoleType(data.roleType)
+        userPreferences.saveCompanyId(data.companyId) // simpan companyId
     }
 
     fun clearToken() {

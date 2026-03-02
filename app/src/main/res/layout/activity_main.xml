@@ -31,5 +31,13 @@
         app:itemIconPadding="16dp"
         app:itemShapeInsetEnd="50dp"
         app:itemShapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent" />
-
+    <View
+        android:id="@+id/activityDimOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:alpha="0"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true" />
 </androidx.drawerlayout.widget.DrawerLayout>

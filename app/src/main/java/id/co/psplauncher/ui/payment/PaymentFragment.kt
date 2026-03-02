@@ -13,6 +13,8 @@ import id.co.psplauncher.R
 import id.co.psplauncher.Utils.formatCurrency
 import id.co.psplauncher.data.network.Resource
 import id.co.psplauncher.databinding.FragmentPaymentBinding
+import id.co.psplauncher.ui.fragments.dialog_paymentconfirmation.DialogPaymentConfirmation
+import id.co.psplauncher.ui.payment.cash.CashPayment
 
 @AndroidEntryPoint
 class PaymentFragment : Fragment() {
@@ -106,6 +108,53 @@ class PaymentFragment : Fragment() {
         binding.btnCard.setOnClickListener { viewModel.selectPaymentMethod(PaymentMethod.CARD) }
         binding.btnEdc.setOnClickListener { viewModel.selectPaymentMethod(PaymentMethod.EDC) }
         binding.btnQris.setOnClickListener { viewModel.selectPaymentMethod(PaymentMethod.QRIS) }
+
+        // Bottom Pay button — pakai binding langsung
+        binding.layoutPay.setOnClickListener {
+            onPayClicked()
+        }
+    }
+
+    private fun onPayClicked() {
+        val method = viewModel.selectedPaymentMethod.value ?: PaymentMethod.CASH
+        val cartId = arguments?.getString("cartId") ?: return
+        val total = viewModel.getCartTotal()
+        val items = (viewModel.cartState.value as? Resource.Success)?.value?.shoppingCartItems ?: emptyList()
+
+        when (method) {
+            PaymentMethod.CASH -> {
+                val cashFragment = CashPayment.newInstance(cartId, total)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, cashFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+            else -> {
+                dimBackground(true)
+                val dialog = DialogPaymentConfirmation.newInstance(
+                    cartId = cartId,
+                    totalAmount = total,
+                    paymentMethod = method,
+                    cartItems = items
+                )
+                dialog.show(childFragmentManager, "dialog_confirmation")
+                childFragmentManager.setFragmentResultListener("dismiss_confirmation", viewLifecycleOwner) { _, _ ->
+                    dimBackground(false)
+                }
+            }
+        }
+    }
+
+    private fun dimBackground(dim: Boolean) {
+        val overlay = requireActivity().findViewById<View>(R.id.activityDimOverlay) ?: return
+        if (dim) {
+            overlay.visibility = View.VISIBLE
+            overlay.animate().alpha(1f).setDuration(200).start()
+        } else {
+            overlay.animate().alpha(0f).setDuration(200).withEndAction {
+                overlay.visibility = View.GONE
+            }.start()
+        }
     }
 
     private fun updateTotalUI() {

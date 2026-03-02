@@ -17,6 +17,14 @@ object CartManager {
     private val _cartItems = MutableStateFlow<List<CartItem>>(emptyList())
     val cartItems: StateFlow<List<CartItem>> = _cartItems.asStateFlow()
 
+    // Menyimpan id cart/draft yang sedang aktif
+    var currentCartId: String? = null
+        private set
+
+    fun setCurrentCartId(id: String?) {
+        currentCartId = id
+    }
+
     fun addToCart(product: Product, quantity: Int) {
         val currentItems = _cartItems.value.toMutableList()
         val existingIndex = currentItems.indexOfFirst { it.product.id == product.id }
@@ -59,6 +67,7 @@ object CartManager {
 
     fun clearCart() {
         _cartItems.value = emptyList()
+        currentCartId = null
     }
 
     fun getCartTotal(): Double {
