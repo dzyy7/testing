@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Icon draft -->
+            <TextView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_violet_circle"
+                android:gravity="center"
+                android:text="📋"
+                android:textSize="16sp" />
+
+            <!-- Name + date -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:id="@+id/tvDraftName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="trx-xxxxxxxxxxxx"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvDraftDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="2026-02-25"
+                    android:textColor="#9E9E9E"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Total + item count -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/tvDraftTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Rp. 0"
+                    android:textColor="@color/mainPurple"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tvItemCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="0 item"
+                    android:textColor="#9E9E9E"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Chevron -->
+            <TextView
+                android:id="@+id/tvChevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="▼"
+                android:textColor="#9E9E9E"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Expandable detail -->
+        <LinearLayout
+            android:id="@+id/layoutDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp"
+                android:background="#EEEEEE" />
+
+            <!-- Detail items container -->
+            <LinearLayout
+                android:id="@+id/layoutDetailItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="4dp" />
+
+            <!-- Load draft + delete button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/btnLoadDraft"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_purple_rounded"
+                    android:gravity="center"
+                    android:text="Gunakan Draft Ini"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <ImageView
+                    android:id="@+id/btnDeleteDraft"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_white_rounded_stroke"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_delete"
+                    android:contentDescription="Delete Draft" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
