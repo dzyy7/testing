@@ -76,244 +76,250 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="100dp">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <!-- Balance Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="16dp">
+                android:orientation="vertical"
+                android:paddingBottom="100dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <!-- Balance Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_wallet"
-                    android:padding="6dp"
-                    android:background="@drawable/bg_violet_circle"/>
-
-                <TextView
-                    android:fontFamily="@font/montserrat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="Balance"
-                    android:textColor="#212121"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <!-- Balance Card ViewPager -->
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vpBalance"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginHorizontal="20dp"
-                android:clipToPadding="false"
-                android:clipChildren="false" />
-
-            <!-- Balance Indicator -->
-            <LinearLayout
-                android:id="@+id/indicatorContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:gravity="center" />
-
-
-
-            <!-- Category Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="24dp"
-                android:paddingBottom="12dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_category"
-                    app:tint="#7B00AB" />
-
-                <TextView
-                    android:fontFamily="@font/montserrat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="Category"
-                    android:textColor="#212121"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <!-- Category Chips -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="8dp"
-                android:clipToPadding="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_category_chip" />
-
-            <!-- Product Section Header -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="12dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_product"
-                    app:tint="#7B00AB" />
-
-                <TextView
-                    android:fontFamily="@font/montserrat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:text="Products"
-                    android:textColor="#212121"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <!-- Grid Toggle Button -->
-                <FrameLayout
-                    android:id="@+id/frameGridView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_btn_toggle_selected">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="16dp">
 
                     <ImageView
-                        android:id="@+id/btnGridView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
-                        android:src="@drawable/ic_grid_view"
-                        android:contentDescription="Grid View"
+                        android:src="@drawable/ic_wallet"
+                        android:padding="6dp"
+                        android:background="@drawable/bg_violet_circle"/>
+
+                    <TextView
+                        android:fontFamily="@font/montserrat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="Balance"
+                        android:textColor="#212121"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <!-- Balance Card ViewPager -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vpBalance"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:clipToPadding="false"
+                    android:clipChildren="false" />
+
+                <!-- Balance Indicator -->
+                <LinearLayout
+                    android:id="@+id/indicatorContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center" />
+
+                <!-- Category Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="20dp"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_category"
                         app:tint="#7B00AB" />
-                </FrameLayout>
 
-                <!-- List Toggle Button -->
-                <FrameLayout
-                    android:id="@+id/frameListView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_btn_toggle_default">
-
-                    <ImageView
-                        android:id="@+id/btnListView"
+                    <TextView
+                        android:fontFamily="@font/montserrat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
-                        android:src="@drawable/ic_list_view"
-                        android:contentDescription="List View"
-                        app:tint="#9E9E9E" />
-                </FrameLayout>
+                        android:layout_marginStart="12dp"
+                        android:text="Category"
+                        android:textColor="#212121"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-            </LinearLayout>
+                </LinearLayout>
 
-            <!-- Search and Sort -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="12dp"
-                android:gravity="center_vertical">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
+                <!-- Category Chips -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCategory"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="12dp"
-                    app:boxCornerRadiusTopStart="25dp"
-                    app:boxCornerRadiusTopEnd="25dp"
-                    app:boxCornerRadiusBottomStart="25dp"
-                    app:boxCornerRadiusBottomEnd="25dp"
-                    app:boxStrokeColor="#E0E0E0"
-                    app:boxStrokeWidth="1.5dp"
-                    app:hintEnabled="true"
-                    android:hint="Search"
-                    app:startIconDrawable="@drawable/ic_search"
-                    app:startIconTint="#9E9E9E">
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="8dp"
+                    android:clipToPadding="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_category_chip" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etSearch"
-                        android:layout_width="match_parent"
+                <!-- Product Section Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="12dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Input..."
-                        android:inputType="text"
-                        android:paddingVertical="12dp"
+                        android:src="@drawable/ic_product"
+                        app:tint="#7B00AB" />
+
+                    <TextView
+                        android:fontFamily="@font/montserrat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:text="Products"
+                        android:textColor="#212121"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!-- Grid Toggle Button -->
+                    <FrameLayout
+                        android:id="@+id/frameGridView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_btn_toggle_selected">
+
+                        <ImageView
+                            android:id="@+id/btnGridView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="4dp"
+                            android:src="@drawable/ic_grid_view"
+                            android:contentDescription="Grid View"
+                            app:tint="#7B00AB" />
+                    </FrameLayout>
+
+                    <!-- List Toggle Button -->
+                    <FrameLayout
+                        android:id="@+id/frameListView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_btn_toggle_default">
+
+                        <ImageView
+                            android:id="@+id/btnListView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="4dp"
+                            android:src="@drawable/ic_list_view"
+                            android:contentDescription="List View"
+                            app:tint="#9E9E9E" />
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <!-- Search and Sort -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="12dp"
+                    android:gravity="center_vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="12dp"
+                        app:boxCornerRadiusTopStart="25dp"
+                        app:boxCornerRadiusTopEnd="25dp"
+                        app:boxCornerRadiusBottomStart="25dp"
+                        app:boxCornerRadiusBottomEnd="25dp"
+                        app:boxStrokeColor="#E0E0E0"
+                        app:boxStrokeWidth="1.5dp"
+                        app:hintEnabled="true"
+                        android:hint="Search"
+                        app:startIconDrawable="@drawable/ic_search"
+                        app:startIconTint="#9E9E9E">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etSearch"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Input..."
+                            android:inputType="text"
+                            android:paddingVertical="12dp"
+                            android:textSize="14sp"
+                            android:textColorHint="#BDBDBD" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSort"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="A-Z"
+                        android:textColor="#212121"
                         android:textSize="14sp"
-                        android:textColorHint="#BDBDBD" />
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingHorizontal="16dp"
+                        app:cornerRadius="25dp"
+                        app:strokeColor="#E0E0E0"
+                        app:strokeWidth="1dp"
+                        app:icon="@drawable/ic_dropdown"
+                        app:iconGravity="end"
+                        app:iconTint="#212121"
+                        app:iconSize="16dp" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSort"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="A-Z"
-                    android:textColor="#212121"
-                    android:textSize="14sp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:paddingHorizontal="16dp"
-                    app:cornerRadius="25dp"
-                    app:strokeColor="#E0E0E0"
-                    app:strokeWidth="1dp"
-                    app:icon="@drawable/ic_dropdown"
-                    app:iconGravity="end"
-                    app:iconTint="#212121"
-                    app:iconSize="16dp" />
+                <!-- Product RecyclerView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewListing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    app:shapeAppearanceOverlay="@style/smallRoundedCorner" />
 
             </LinearLayout>
 
-            <!-- Product RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewListing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                app:shapeAppearanceOverlay="@style/smallRoundedCorner" />
+        </androidx.core.widget.NestedScrollView>
 
-        </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </androidx.core.widget.NestedScrollView>
     <!-- Dim Overlay -->
     <View
         android:id="@+id/dimOverlay"
@@ -325,6 +331,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Bottom Cart Bar -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bottomCartBar"

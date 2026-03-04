@@ -149,7 +149,10 @@ class DialogPaymentConfirmation : BottomSheetDialogFragment() {
 
     private fun navigateToInvoice(response: TransactionResponse) {
         CartManager.clearCart()
-        val fragment = DetailInvoiceFragment.newInstance(response)
+        val fragment = DetailInvoiceFragment.newInstance(
+            response = response,
+            nominalBayar = nominalBayar  // ← pass nominalBayar ke invoice
+        )
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()

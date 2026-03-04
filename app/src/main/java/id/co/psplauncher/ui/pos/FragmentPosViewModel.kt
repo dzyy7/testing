@@ -58,6 +58,10 @@ class FragmentPosViewModel @Inject constructor(
     private val _isGridMode = MutableLiveData(true)
     val isGridMode: LiveData<Boolean> = _isGridMode
 
+    // Pull-to-refresh state
+    private val _isRefreshing = MutableLiveData(false)
+    val isRefreshing: LiveData<Boolean> = _isRefreshing
+
     // Adapter references untuk refresh cart state
     private var gridAdapter: GridProductAdapter? = null
     private var listAdapter: ListProductAdapter? = null
@@ -81,6 +85,20 @@ class FragmentPosViewModel @Inject constructor(
         fetchProducts()
     }
 
+    // Pull-to-refresh: refresh semua data sekaligus
+    fun refreshAll() {
+        viewModelScope.launch {
+            _isRefreshing.value = true
+            try {
+                fetchBalanceData()
+                fetchCategories()
+                fetchProducts()
+            } finally {
+                _isRefreshing.value = false
+            }
+        }
+    }
+
     // Dipanggil dari Fragment saat CartManager.cartItems flow emit
     fun refreshAdapterCartState() {
         if (_isGridMode.value == true) {
@@ -90,7 +108,7 @@ class FragmentPosViewModel @Inject constructor(
         }
     }
 
-    private fun fetchBalanceData() = viewModelScope.launch {
+    fun fetchBalanceData() = viewModelScope.launch {
         try {
             val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
             val response = balanceRepository.fetchBalance(currentDate)
@@ -265,7 +283,6 @@ class FragmentPosViewModel @Inject constructor(
         binding: FragmentPosBinding,
         onGridProductClick: (Product) -> Unit
     ) {
-        // Simpan reference ke property ViewModel agar bisa di-refresh dari luar
         gridAdapter = GridProductAdapter(
             items = emptyList(),
             context = context,
@@ -280,13 +297,11 @@ class FragmentPosViewModel @Inject constructor(
             }
         )
 
-        // Set default adapter (Grid)
         binding.recyclerViewListing.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = gridAdapter
         }
 
-        // Observe toggle state → swap layout manager & adapter
         isGridMode.observe(lifecycleOwner) { isGrid ->
             if (isGrid) {
                 binding.recyclerViewListing.layoutManager = GridLayoutManager(context, 2)
@@ -300,7 +315,6 @@ class FragmentPosViewModel @Inject constructor(
             }
         }
 
-        // Observe products → update active adapter
         _displayedProducts.observe(lifecycleOwner) { list ->
             if (_isGridMode.value == true) {
                 gridAdapter?.updateData(list)
@@ -315,17 +329,17 @@ class FragmentPosViewModel @Inject constructor(
         fun applyToggleVisual(isGrid: Boolean) {
             if (isGrid) {
                 binding.frameGridView.background =
-                    context.getDrawable(id.co.psplauncher.R.drawable.bg_btn_toggle_selected)
+                    context.getDrawable(R.drawable.bg_btn_toggle_selected)
                 binding.btnGridView.setColorFilter(0xFF7B00AB.toInt())
                 binding.frameListView.background =
-                    context.getDrawable(id.co.psplauncher.R.drawable.bg_btn_toggle_default)
+                    context.getDrawable(R.drawable.bg_btn_toggle_default)
                 binding.btnListView.setColorFilter(0xFF9E9E9E.toInt())
             } else {
                 binding.frameListView.background =
-                    context.getDrawable(id.co.psplauncher.R.drawable.bg_btn_toggle_selected)
+                    context.getDrawable(R.drawable.bg_btn_toggle_selected)
                 binding.btnListView.setColorFilter(0xFF7B00AB.toInt())
                 binding.frameGridView.background =
-                    context.getDrawable(id.co.psplauncher.R.drawable.bg_btn_toggle_default)
+                    context.getDrawable(R.drawable.bg_btn_toggle_default)
                 binding.btnGridView.setColorFilter(0xFF9E9E9E.toInt())
             }
         }

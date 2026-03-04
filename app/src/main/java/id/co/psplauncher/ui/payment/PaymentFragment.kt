@@ -15,6 +15,8 @@ import id.co.psplauncher.data.network.Resource
 import id.co.psplauncher.databinding.FragmentPaymentBinding
 import id.co.psplauncher.ui.fragments.dialog_paymentconfirmation.DialogPaymentConfirmation
 import id.co.psplauncher.ui.payment.cash.CashPayment
+import id.co.psplauncher.ui.payment.edc.EdcPayment
+import id.co.psplauncher.ui.payment.transfer.TransferPayment
 
 @AndroidEntryPoint
 class PaymentFragment : Fragment() {
@@ -109,7 +111,6 @@ class PaymentFragment : Fragment() {
         binding.btnEdc.setOnClickListener { viewModel.selectPaymentMethod(PaymentMethod.EDC) }
         binding.btnQris.setOnClickListener { viewModel.selectPaymentMethod(PaymentMethod.QRIS) }
 
-        // Bottom Pay button — pakai binding langsung
         binding.layoutPay.setOnClickListener {
             onPayClicked()
         }
@@ -123,13 +124,31 @@ class PaymentFragment : Fragment() {
 
         when (method) {
             PaymentMethod.CASH -> {
+                // Navigate ke CashPayment fragment
                 val cashFragment = CashPayment.newInstance(cartId, total)
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainer, cashFragment)
                     .addToBackStack(null)
                     .commit()
             }
+            PaymentMethod.BANK_TRANSFER -> {
+                // Navigate ke TransferPayment fragment
+                val transferFragment = TransferPayment.newInstance(cartId)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, transferFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+            PaymentMethod.EDC -> {
+                // Navigate ke EdcPayment fragment
+                val edcFragment = EdcPayment.newInstance(cartId)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, edcFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
             else -> {
+                // CARD, QRIS → langsung dialog konfirmasi
                 dimBackground(true)
                 val dialog = DialogPaymentConfirmation.newInstance(
                     cartId = cartId,
@@ -172,7 +191,6 @@ class PaymentFragment : Fragment() {
             binding.btnQris
         )
 
-        // Reset semua ke unselected state
         allButtons.forEach { btn ->
             btn.setBackgroundResource(R.drawable.bg_white_rounded_stroke)
             for (i in 0 until btn.childCount) {
@@ -181,7 +199,6 @@ class PaymentFragment : Fragment() {
                     child.setTextColor(0xFF333333.toInt())
                 }
                 if (child is android.widget.ImageView) {
-                    // Tampilkan bundaran kembali saat unselected
                     child.setBackgroundResource(R.drawable.bg_violet_circle)
                     child.setColorFilter(
                         androidx.core.content.ContextCompat.getColor(requireContext(), R.color.mainPurple)
@@ -190,7 +207,6 @@ class PaymentFragment : Fragment() {
             }
         }
 
-        // Apply selected state
         val selectedBtn = when (method) {
             PaymentMethod.CASH -> binding.btnCash
             PaymentMethod.BANK_TRANSFER -> binding.btnTransfer
@@ -206,7 +222,6 @@ class PaymentFragment : Fragment() {
                 child.setTextColor(0xFFFFFFFF.toInt())
             }
             if (child is android.widget.ImageView) {
-                // Hilangkan bundaran saat selected, icon langsung putih
                 child.background = null
                 child.setColorFilter(0xFFFFFFFF.toInt())
             }

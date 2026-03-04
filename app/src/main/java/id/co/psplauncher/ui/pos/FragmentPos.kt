@@ -37,6 +37,7 @@ class FragmentPos : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         setupClickListeners()
+        setupSwipeRefresh()
         observeCart()
     }
 
@@ -50,6 +51,19 @@ class FragmentPos : Fragment() {
         viewModel.setupSearchListener(binding)
     }
 
+    private fun setupSwipeRefresh() {
+        binding.swipeRefresh.setColorSchemeResources(
+            android.R.color.holo_purple,
+            android.R.color.holo_blue_bright
+        )
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.refreshAll()
+        }
+        viewModel.isRefreshing.observe(viewLifecycleOwner) { isRefreshing ->
+            binding.swipeRefresh.isRefreshing = isRefreshing
+        }
+    }
+
     private fun setupClickListeners() {
         binding.btnMenu.setOnClickListener {
             (activity as? MainActivity)?.openDrawer()
@@ -59,7 +73,6 @@ class FragmentPos : Fragment() {
             showCart()
         }
 
-        // Tombol draft — sesuaikan id dengan yang ada di fragment_pos.xml
         binding.btnDraft.setOnClickListener {
             showDraft()
         }

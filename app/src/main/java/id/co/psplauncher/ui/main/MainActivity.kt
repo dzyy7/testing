@@ -4,13 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import id.co.psplauncher.R
 import id.co.psplauncher.databinding.ActivityMainBinding
+import id.co.psplauncher.ui.fragments.dialog_logout.BottomSheetLogout
 import id.co.psplauncher.ui.login.LoginActivity
 import id.co.psplauncher.ui.pos.FragmentPos
 
@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupNavigationDrawer()
+        setupLogoutBottomSheetListener()
         observeLogoutState()
 
         if (savedInstanceState == null) {
@@ -39,21 +40,24 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_pos -> {
                     loadFragment(FragmentPos())
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    true
                 }
                 R.id.nav_dashboard -> {
                     Toast.makeText(this, "Menu Dashboard Coming Soon!", Toast.LENGTH_SHORT).show()
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    false
                 }
                 R.id.nav_laporan -> {
                     Toast.makeText(this, "Menu Laporan Coming Soon!", Toast.LENGTH_SHORT).show()
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    false
                 }
                 R.id.nav_logout -> {
                     showLogoutConfirmation()
-                    return@setNavigationItemSelectedListener false
+                    false
                 }
+                else -> false
             }
-            true
         }
 
         binding.navView.setCheckedItem(R.id.nav_pos)
@@ -67,15 +71,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showLogoutConfirmation() {
-        AlertDialog.Builder(this)
-            .setTitle("Logout")
-            .setMessage("Apakah Anda yakin ingin keluar?")
-            .setPositiveButton("Ya") { _, _ ->
+    private fun setupLogoutBottomSheetListener() {
+        supportFragmentManager.setFragmentResultListener(
+            BottomSheetLogout.REQUEST_KEY,
+            this
+        ) { _, bundle ->
+            val shouldLogout = bundle.getBoolean(BottomSheetLogout.RESULT_LOGOUT, false)
+            if (shouldLogout) {
                 viewModel.logout()
             }
-            .setNegativeButton("Tidak", null)
-            .show()
+        }
+    }
+
+    private fun showLogoutConfirmation() {
+        val bottomSheet = BottomSheetLogout.newInstance()
+        bottomSheet.show(supportFragmentManager, BottomSheetLogout::class.java.simpleName)
     }
 
     private fun navigateToLogin() {
