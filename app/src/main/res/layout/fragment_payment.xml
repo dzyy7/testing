@@ -143,8 +143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Tunai"
-                        android:textColor="#FFFFFF"
-                        android:textStyle="bold" />
+                        android:textColor="#FFFFFF" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -197,7 +196,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_violet_circle"
-                        android:src="@drawable/ic_transferbank"
+                        android:src="@drawable/ic_card"
                         app:tint="@color/mainPurple"/>
 
                     <TextView
@@ -223,7 +222,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_violet_circle"
-                        android:src="@drawable/ic_transferbank"
+                        android:src="@drawable/ic_edc"
                         app:tint="@color/mainPurple"/>
 
                     <TextView
@@ -254,7 +253,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_violet_circle"
-                        android:src="@drawable/ic_transferbank"
+                        android:src="@drawable/ic_qris_qr"
                         app:tint="@color/mainPurple"/>
 
                     <TextView

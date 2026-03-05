@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import id.co.psplauncher.R
 import id.co.psplauncher.Utils.formatCurrency
 import id.co.psplauncher.data.local.CartManager
 import id.co.psplauncher.databinding.FragmentPosBinding
@@ -15,6 +16,7 @@ import id.co.psplauncher.ui.fragments.fragment_cart.FragmentCart
 import id.co.psplauncher.ui.fragments.fragment_draft.FragmentDraft
 import id.co.psplauncher.ui.fragments.item_detail.FragmentItemDetail
 import id.co.psplauncher.ui.main.MainActivity
+import id.co.psplauncher.ui.notification.NotificationFragment
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -100,7 +102,7 @@ class FragmentPos : Fragment() {
         }
 
         binding.btnNotification.setOnClickListener {
-            // TODO: Handle notification click
+            navigateToNotification()
         }
     }
 
@@ -164,6 +166,14 @@ class FragmentPos : Fragment() {
                 }
                 .start()
         }
+    }
+
+    private fun navigateToNotification() {
+        val notificationFragment = NotificationFragment()
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, notificationFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onDestroyView() {

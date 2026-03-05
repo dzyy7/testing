@@ -10,6 +10,7 @@ import id.co.psplauncher.data.network.balance.BalanceApi
 import id.co.psplauncher.data.network.cart.ShoppingCartApi
 import id.co.psplauncher.data.network.chip.ChipApi
 import id.co.psplauncher.data.network.dashboard.DashboardApi
+import id.co.psplauncher.data.network.notification.NotificationApi
 import id.co.psplauncher.data.network.transaction.TransactionApi
 import javax.inject.Singleton
 
@@ -46,5 +47,10 @@ object AppModule {
     @Provides
     fun provideTransactionApi(remoteDataSource: RemoteDataSource): TransactionApi {
         return remoteDataSource.buildApi(TransactionApi::class.java)
+    }
+
+    @Provides
+    fun provideNotificationApi(remoteDataSource: RemoteDataSource): NotificationApi {
+        return remoteDataSource.buildApi(NotificationApi::class.java)
     }
 }
