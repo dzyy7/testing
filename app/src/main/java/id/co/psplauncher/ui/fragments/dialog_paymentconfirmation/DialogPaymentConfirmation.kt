@@ -1,5 +1,6 @@
 package id.co.psplauncher.ui.fragments.dialog_paymentconfirmation
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -103,6 +104,7 @@ class DialogPaymentConfirmation : BottomSheetDialogFragment() {
         binding.iconHeader.setImageResource(
             when (paymentMethod) {
                 PaymentMethod.CASH -> R.drawable.ic_cash
+                PaymentMethod.QRIS -> R.drawable.ic_qris
                 else -> R.drawable.ic_transferbank
             }
         )
@@ -148,14 +150,31 @@ class DialogPaymentConfirmation : BottomSheetDialogFragment() {
     }
 
     private fun navigateToInvoice(response: TransactionResponse) {
+        // Hide overlay otomatis sebelum navigate ke invoice
+        hideDimOverlay()
+        
         CartManager.clearCart()
         val fragment = DetailInvoiceFragment.newInstance(
             response = response,
-            nominalBayar = nominalBayar  // ← pass nominalBayar ke invoice
+            nominalBayar = nominalBayar
         )
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()
+    }
+
+    private fun hideDimOverlay() {
+        val overlay = requireActivity().findViewById<View>(R.id.activityDimOverlay) ?: return
+        if (overlay.visibility == View.VISIBLE) {
+            ObjectAnimator.ofFloat(overlay, "alpha", 1f, 0f).apply {
+                duration = 200
+                start()
+            }.addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: android.animation.Animator) {
+                    overlay.visibility = View.GONE
+                }
+            })
+        }
     }
 
     override fun onDismiss(dialog: android.content.DialogInterface) {

@@ -9,13 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import id.co.psplauncher.data.network.Resource
 import id.co.psplauncher.R
 import id.co.psplauncher.Utils.formatCurrency
-import id.co.psplauncher.data.network.Resource
 import id.co.psplauncher.databinding.FragmentPaymentBinding
 import id.co.psplauncher.ui.fragments.dialog_paymentconfirmation.DialogPaymentConfirmation
 import id.co.psplauncher.ui.payment.cash.CashPayment
 import id.co.psplauncher.ui.payment.edc.EdcPayment
+import id.co.psplauncher.ui.payment.qris.QrisPayment
 import id.co.psplauncher.ui.payment.transfer.TransferPayment
 
 @AndroidEntryPoint
@@ -147,8 +148,16 @@ class PaymentFragment : Fragment() {
                     .addToBackStack(null)
                     .commit()
             }
+            PaymentMethod.QRIS -> {
+                // Navigate ke QrisPayment fragment
+                val qrisFragment = QrisPayment.newInstance(cartId)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, qrisFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
             else -> {
-                // CARD, QRIS → langsung dialog konfirmasi
+                // CARD → langsung dialog konfirmasi
                 dimBackground(true)
                 val dialog = DialogPaymentConfirmation.newInstance(
                     cartId = cartId,

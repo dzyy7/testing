@@ -95,11 +95,15 @@ class TransferPayment : Fragment() {
     }
 
     private fun showDetailTransaction() {
+        dimBackground(true)
         val dialog = DialogDetailTransaction.newInstance(
             cartItems = viewModel.getCartItems(),
             totalAmount = viewModel.getCartTotal()
         )
         dialog.show(childFragmentManager, "DialogDetailTransaction")
+        childFragmentManager.setFragmentResultListener(DialogDetailTransaction.REQUEST_KEY, viewLifecycleOwner) { _, _ ->
+            dimBackground(false)
+        }
     }
 
     private fun showPaymentConfirmation() {

@@ -21,6 +21,8 @@ class DialogDetailTransaction : BottomSheetDialogFragment() {
     private var totalAmount: Double = 0.0
 
     companion object {
+        const val REQUEST_KEY = "detail_transaction_dismiss"
+        
         fun newInstance(
             cartItems: List<ShoppingCartItemResponse>,
             totalAmount: Double
@@ -69,6 +71,11 @@ class DialogDetailTransaction : BottomSheetDialogFragment() {
         binding.tvNetPrice.text = "Rp. ${formatCurrency(netPrice)}"
         binding.tvTax.text = "Rp. ${formatCurrency(totalTax)}"
         binding.tvTotalAmount.text = "Rp. ${formatCurrency(totalAmount)}"
+    }
+
+    override fun onDismiss(dialog: android.content.DialogInterface) {
+        super.onDismiss(dialog)
+        parentFragmentManager.setFragmentResult(REQUEST_KEY, Bundle())
     }
 
     override fun onDestroyView() {

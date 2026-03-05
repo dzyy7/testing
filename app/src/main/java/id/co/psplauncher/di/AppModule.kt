@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import id.co.psplauncher.data.network.RemoteDataSource
 import id.co.psplauncher.data.network.auth.AuthApi
 import id.co.psplauncher.data.network.balance.BalanceApi
+import id.co.psplauncher.data.network.card.CardInquiryApi
 import id.co.psplauncher.data.network.cart.ShoppingCartApi
 import id.co.psplauncher.data.network.chip.ChipApi
 import id.co.psplauncher.data.network.dashboard.DashboardApi
@@ -52,5 +53,10 @@ object AppModule {
     @Provides
     fun provideNotificationApi(remoteDataSource: RemoteDataSource): NotificationApi {
         return remoteDataSource.buildApi(NotificationApi::class.java)
+    }
+
+    @Provides
+    fun provideCardInquiryApi(remoteDataSource: RemoteDataSource): CardInquiryApi {
+        return remoteDataSource.buildApi(CardInquiryApi::class.java)
     }
 }
