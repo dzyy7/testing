@@ -14,6 +14,7 @@ import id.co.psplauncher.R
 import id.co.psplauncher.Utils.formatCurrency
 import id.co.psplauncher.databinding.FragmentPaymentBinding
 import id.co.psplauncher.ui.fragments.dialog_paymentconfirmation.DialogPaymentConfirmation
+import id.co.psplauncher.ui.payment.card.CardPayment
 import id.co.psplauncher.ui.payment.cash.CashPayment
 import id.co.psplauncher.ui.payment.edc.EdcPayment
 import id.co.psplauncher.ui.payment.qris.QrisPayment
@@ -153,6 +154,13 @@ class PaymentFragment : Fragment() {
                 val qrisFragment = QrisPayment.newInstance(cartId)
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainer, qrisFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+            PaymentMethod.CARD -> {
+                val cardFragment = CardPayment.newInstance(cartId)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, cardFragment)
                     .addToBackStack(null)
                     .commit()
             }

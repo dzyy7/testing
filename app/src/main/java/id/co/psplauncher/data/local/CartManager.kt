@@ -70,8 +70,23 @@ object CartManager {
         currentCartId = null
     }
 
-    fun getCartTotal(): Double {
+    fun getCartSubtotal(): Double {
         return _cartItems.value.sumOf { it.totalPrice }
+    }
+
+    fun getCartTax(): Double {
+        return _cartItems.value.sumOf {
+            it.product.tax * it.product.sellingPrice * it.quantity / 100
+        }
+    }
+
+    fun getCartTotalWithTax(): Double {
+        return getCartSubtotal() + getCartTax()
+    }
+
+    @Deprecated("Use getCartTotalWithTax() instead", ReplaceWith("getCartTotalWithTax()"))
+    fun getCartTotal(): Double {
+        return getCartSubtotal()
     }
 
     fun getCartItemCount(): Int {

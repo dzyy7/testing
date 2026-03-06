@@ -83,13 +83,23 @@ class DialogPaymentConfirmation : BottomSheetDialogFragment() {
     }
 
     private fun setupUI() {
-        binding.valueTotalAmount.text = "Rp. ${formatCurrency(totalAmount)}"
-        binding.valueTotalBayar.text = "Rp. ${formatCurrency(
-            if (paymentMethod.showKembalian()) nominalBayar else totalAmount
-        )}"
+        // Hitung subtotal, tax, dan total dengan tax
+        val subtotal = cartItems.sumOf { it.product.sellingPrice * it.quantity }
+        val totalTax = cartItems.sumOf { it.product.tax * it.product.sellingPrice * it.quantity / 100 }
+        val totalWithTax = subtotal + totalTax
 
+        // Tampilkan subtotal, tax, dan total
+        binding.valueSubtotal.text = "Rp. ${formatCurrency(subtotal)}"
+        binding.valueTax.text = "Rp. ${formatCurrency(totalTax)}"
+        binding.valueTotalAmount.text = "Rp. ${formatCurrency(totalWithTax)}"
+
+        // Total bayar: untuk CASH pakai nominalBayar, untuk lainnya pakai totalWithTax
+        val totalBayar = if (paymentMethod.showKembalian()) nominalBayar else totalWithTax
+        binding.valueTotalBayar.text = "Rp. ${formatCurrency(totalBayar)}"
+
+        // Kembalian hanya untuk CASH
         if (paymentMethod.showKembalian()) {
-            val kembalian = maxOf(0.0, nominalBayar - totalAmount)
+            val kembalian = maxOf(0.0, nominalBayar - totalWithTax)
             binding.labelKembalian.visibility = View.VISIBLE
             binding.valueKembalian.visibility = View.VISIBLE
             binding.valueKembalian.text = "Rp. ${formatCurrency(kembalian)}"
@@ -97,9 +107,6 @@ class DialogPaymentConfirmation : BottomSheetDialogFragment() {
             binding.labelKembalian.visibility = View.GONE
             binding.valueKembalian.visibility = View.GONE
         }
-
-        val totalTax = cartItems.sumOf { it.product.tax * it.product.sellingPrice * it.quantity / 100 }
-        binding.valueTax.text = "Rp. ${formatCurrency(totalTax)}"
 
         binding.iconHeader.setImageResource(
             when (paymentMethod) {

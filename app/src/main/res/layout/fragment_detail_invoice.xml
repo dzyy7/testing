@@ -192,16 +192,39 @@
                 app:layout_constraintTop_toBottomOf="@id/rvProductList"/>
 
             <TextView
-                android:id="@+id/labelTax"
+                android:id="@+id/labelSubtotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Subtotal"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/labelIdTransaction"
+                app:layout_constraintTop_toBottomOf="@+id/dividerTransaction" />
+
+            <TextView
+                android:id="@+id/valueSubtotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:text="Rp.0"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/labelSubtotal"
+                app:layout_constraintEnd_toEndOf="@id/valueIdTransaction" />
+
+            <TextView
+                android:id="@+id/labelTax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/montserrat"
                 android:text="Tax"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@id/labelIdTransaction"
-                app:layout_constraintTop_toBottomOf="@+id/dividerTransaction" />
+                app:layout_constraintTop_toBottomOf="@+id/labelSubtotal" />
 
             <TextView
                 android:id="@+id/valueTax"

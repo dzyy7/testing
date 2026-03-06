@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
+import id.co.psplauncher.NfcHelper
 import id.co.psplauncher.R
 import id.co.psplauncher.databinding.ActivityMainBinding
 import id.co.psplauncher.ui.fragments.dialog_logout.BottomSheetLogout
@@ -93,6 +94,10 @@ class MainActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        NfcHelper.handleNfcIntent(this, intent)
     }
 
     private fun loadFragment(fragment: Fragment) {

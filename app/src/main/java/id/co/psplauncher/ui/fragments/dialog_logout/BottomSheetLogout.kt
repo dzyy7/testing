@@ -22,7 +22,7 @@ class BottomSheetLogout : BottomSheetDialogFragment() {
     companion object {
         const val REQUEST_KEY = "logout_request"
         const val RESULT_LOGOUT = "result_logout"
-
+        
         fun newInstance() = BottomSheetLogout()
     }
 

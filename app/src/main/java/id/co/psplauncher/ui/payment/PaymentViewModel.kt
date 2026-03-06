@@ -66,9 +66,25 @@ class PaymentViewModel @Inject constructor(
         _selectedPaymentMethod.value = method
     }
 
-    fun getCartTotal(): Double {
+    fun getCartSubtotal(): Double {
         val cart = (_cartState.value as? Resource.Success)?.value ?: return 0.0
         return cart.shoppingCartItems.sumOf { it.product.sellingPrice * it.quantity }
+    }
+
+    fun getCartTax(): Double {
+        val cart = (_cartState.value as? Resource.Success)?.value ?: return 0.0
+        return cart.shoppingCartItems.sumOf {
+            it.product.tax * it.product.sellingPrice * it.quantity / 100
+        }
+    }
+
+    fun getCartTotalWithTax(): Double {
+        return getCartSubtotal() + getCartTax()
+    }
+
+    @Deprecated("Use getCartTotalWithTax() instead", ReplaceWith("getCartTotalWithTax()"))
+    fun getCartTotal(): Double {
+        return getCartSubtotal()
     }
 }
 

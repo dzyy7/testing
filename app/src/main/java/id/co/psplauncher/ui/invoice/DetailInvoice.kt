@@ -73,6 +73,9 @@ class DetailInvoiceFragment : Fragment() {
         binding.valuePaymentMethod.text = response.paymentMethod.replace("_", " ")
 
         val totalTax = response.orderDetails.sumOf { it.tax }
+        val subtotal = response.totalAmount - totalTax
+        
+        binding.valueSubtotal.text = "Rp. ${formatCurrency(subtotal)}"
         binding.valueTax.text = "Rp. ${formatCurrency(totalTax)}"
         binding.valueTotalAmount.text = "Rp. ${formatCurrency(response.totalAmount)}"
 
